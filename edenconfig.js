@@ -19,10 +19,14 @@ config.audit = {
         const escapeRegex = require('escape-string-regexp');
 
         // get users
-        const users = await User.match('username', new RegExp(escapeRegex(param.toString().toLowerCase()), 'i')).find();
+        const users = await User.or({
+          username : new RegExp(escapeRegex(param.toString().toLowerCase()), 'i'),
+        }, {
+          email : new RegExp(escapeRegex(param.toString().toLowerCase()), 'i'),
+        }).find();
 
         // map user
-        grid.in('user.id', users.map(user => user.get('_id').toString()));
+        grid.in('by.id', users.map(user => user.get('_id').toString()));
       },
     },
     {

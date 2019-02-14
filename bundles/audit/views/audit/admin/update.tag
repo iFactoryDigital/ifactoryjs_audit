@@ -13,11 +13,15 @@
     </admin-header>
 
     <div class="container-fluid">
-      <form-render action="/admin/audit/{ opts.item.id }/update" method="post" ref="form" form={ opts.form } placement="ifactory.audit" positions={ this.positions } preview={ this.preview } class="d-block mb-3" />
-      <div class="text-right">
-        <button type="button" onclick={ onSubmit } class={ 'btn btn-success' : true, 'disabled' : this.loading } disabled={ this.loading }>
-          { this.loading ? 'Submitting...' : 'Submit' }
-        </button>
+      <div class="card">
+        <div class="card-body">
+          <form-render action="/admin/audit/{ opts.item.id }/update" method="post" ref="form" form={ opts.form } placement="ifactory.audit" positions={ this.positions } preview={ this.preview } class="d-block mb-3" />
+        </div>
+        <div class="card-footer text-right">
+          <button type="button" onclick={ onSubmit } class={ 'btn btn-success' : true, 'disabled' : this.loading } disabled={ this.loading }>
+            { this.loading ? 'Submitting...' : 'Submit' }
+          </button>
+        </div>
       </div>
     </div>
     

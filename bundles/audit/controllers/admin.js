@@ -17,7 +17,6 @@ const Audit = model('audit');
 
 // require helpers
 const formHelper  = helper('form');
-const fieldHelper = helper('form/field');
 const blockHelper = helper('cms/block');
 
 /**
@@ -100,9 +99,10 @@ class AuditAdminController extends Controller {
    * @param {Response} res
    *
    * @icon     fa fa-file-medical
-   * @menu     {ADMIN} Audits
+   * @menu     {ADMIN} Audit
    * @title    Audit Administration
    * @route    {get} /
+   * @parent   /admin/config
    * @layout   admin
    * @priority 10
    */
@@ -158,7 +158,10 @@ class AuditAdminController extends Controller {
       item   : await audit.sanitise(),
       form   : sanitised,
       title  : `Update ${audit.get('_id').toString()}`,
-      fields : config.get('audit.fields').slice(0).map((field) => {
+      fields : config.get('audit.fields').map((field) => {
+        // clone field
+        field = JSON.parse(JSON.stringify(field));
+
         // delete field stuff
         delete field.format;
         delete field.filter;
@@ -309,7 +312,7 @@ class AuditAdminController extends Controller {
    */
   _grid(req) {
     // Create new grid
-    const auditGrid = new Grid(req);
+    const auditGrid = new Grid();
 
     // Set route
     auditGrid.route('/admin/audit/grid');
