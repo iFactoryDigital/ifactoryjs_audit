@@ -69,7 +69,7 @@ class AuditAdminController extends Controller {
       return {
         tag   : 'grid',
         name  : 'Audits',
-        grid  : await this._grid(req).render(fauxReq),
+        grid  : await (await this._grid(req)).render(fauxReq),
         class : blockModel.get('class') || null,
         title : blockModel.get('title') || '',
       };
@@ -109,7 +109,7 @@ class AuditAdminController extends Controller {
   async indexAction(req, res) {
     // Render grid
     res.render('audit/admin', {
-      grid : await this._grid(req).render(req),
+      grid : await (await this._grid(req)).render(req),
     });
   }
 
@@ -298,9 +298,9 @@ class AuditAdminController extends Controller {
    * @route  {post} /grid
    * @return {*}
    */
-  gridAction(req, res) {
+  async gridAction(req, res) {
     // Return post grid request
-    return this._grid(req).post(req, res);
+    return (await this._grid(req)).post(req, res);
   }
 
   /**
@@ -310,7 +310,7 @@ class AuditAdminController extends Controller {
    *
    * @return {grid}
    */
-  _grid(req) {
+  async _grid(req) {
     // Create new grid
     const auditGrid = new Grid();
 
@@ -327,39 +327,51 @@ class AuditAdminController extends Controller {
       format : (col) => {
         return col ? col.toString() : '<i>N/A</i>';
       },
+    }).column('subject', {
+      sort   : true,
+      title  : 'Subject',
+      format : async (col, row) => {
+        return `${row.get('subject.model')} #${row.get('subject.id')}${col ? '' : ' <i>Removed</i>'}`;
+      },
+    }).column('by', {
+      sort   : true,
+      title  : 'By',
+      format : async (col, row) => {
+        // return name
+        return col ? `<a href="/admin/user/${col.get('_id').toString()}/update">${col.name()}</a>` : `user #${row.get('by.id')} <i>Removed</i>`;
+      },
     });
 
-    // audit fields
-    config.get('audit.fields').slice(0).filter(field => field.grid).forEach((field) => {
+    // get form
+    const form = await formHelper.get('edenjs.audit');
+
+    // branch fields
+    await Promise.all((form.get('_id') ? form.get('fields') : config.get('audit.fields').slice(0)).map(async (field, i) => {
+      // set found
+      const found = config.get('audit.fields').find(f => f.name === field.name);
+
       // add config field
-      auditGrid.column(field.name, {
-        sort   : true,
-        title  : field.label,
-        format : field.format ? field.format : (col) => {
-          return col ? col.toString() : '<i>N/A</i>';
-        },
-      });
-    });
+      if (found.grid) {
+        // add column
+        await formHelper.column(req, form, auditGrid, field, {
+          priority : 100 - i,
+        });
+      }
+    }));
 
     auditGrid.column('updated_at', {
+      tag    : 'grid-date',
       sort   : true,
       title  : 'Updated',
       format : (col) => {
-        return col.toLocaleDateString('en-GB', {
-          day   : 'numeric',
-          month : 'short',
-          year  : 'numeric',
-        });
+        return col.toISOString();
       },
     }).column('created_at', {
+      tag    : 'grid-date',
       sort   : true,
       title  : 'Created',
       format : (col) => {
-        return col.toLocaleDateString('en-GB', {
-          day   : 'numeric',
-          month : 'short',
-          year  : 'numeric',
-        });
+        return col.toISOString();
       },
     })
       .column('actions', {
@@ -393,7 +405,7 @@ class AuditAdminController extends Controller {
     });
 
     // Set default sort order
-    auditGrid.sort('created_at', 1);
+    auditGrid.sort('created_at', -1);
 
     // Return grid
     return auditGrid;

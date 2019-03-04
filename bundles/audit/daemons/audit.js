@@ -23,7 +23,7 @@ class AuditDaemon extends Daemon {
     super(...arguments);
 
     // get audit models
-    const models = (config.get('audit.models') || Object.keys(cache('models'))).filter((m) => m !== 'audit');
+    const models = (config.get('audit.models') || Object.keys(cache('models'))).filter(m => m !== 'audit');
 
     // add hook
     models.forEach((m) => {
@@ -36,7 +36,6 @@ class AuditDaemon extends Daemon {
        * @return {Promise}
        */
       const createMonitor = (way, type) => {
-
         // return function
         return (subject, { by, updates }) => {
           // create audit entity
@@ -46,7 +45,7 @@ class AuditDaemon extends Daemon {
             type,
             subject,
             updates : {},
-            message : `${(way === 'create' ? 'Created' : (way === 'update' ? 'Updated' : 'Removed'))} ${subject.constructor.name}`
+            message : `${(way === 'create' ? 'Created' : (way === 'update' ? 'Updated' : 'Removed'))} ${subject.constructor.name}`,
           });
 
           // updates
@@ -71,7 +70,6 @@ class AuditDaemon extends Daemon {
       this.eden.pre(`${m}.remove`, createMonitor('remove', m));
       this.eden.post(`${m}.create`, createMonitor('create', m));
     });
-
   }
 }
 
