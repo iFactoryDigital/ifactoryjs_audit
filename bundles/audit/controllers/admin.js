@@ -340,6 +340,13 @@ class AuditAdminController extends Controller {
         // return name
         return col ? `<a href="/admin/user/${col.get('_id').toString()}/update">${col.name()}</a>` : `user #${row.get('by.id')} <i>Removed</i>`;
       },
+    }).column('updates', {
+      sort   : true,
+      title  : 'Updates',
+      format : async (col, row) => {
+        // return name
+        return col && Object.keys(col || {}).length ? Object.keys(col || {}).join(', ') : '<i>N/A</i>';
+      },
     });
 
     // get form
