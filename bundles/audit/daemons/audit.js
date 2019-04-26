@@ -9,9 +9,7 @@ const Audit = model('audit');
 
 /**
  * create audit daemon class
- *
- * @compute
- * @express
+ * 
  * @extends Daemon
  */
 class AuditDaemon extends Daemon {
