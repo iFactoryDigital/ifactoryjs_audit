@@ -8,7 +8,7 @@ install:
 before_script:
 - node node_modules/eslint/bin/eslint.js .
 script:
-- node ./index.js help
+- node ./edenconfig.js
 after_script:
 - npm test
 deploy:
