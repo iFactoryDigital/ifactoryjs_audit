@@ -1,7 +1,6 @@
 
 // require local dependencies
-const Model  = require('model');
-const config = require('config');
+const Model = require('model');
 
 /**
  * create audit model
@@ -10,9 +9,9 @@ class Audit extends Model {
   /**
    * construct audit model
    */
-  constructor() {
+  constructor(...args) {
     // run super
-    super(...arguments);
+    super(...args);
 
     // bind methods
     this.sanitise = this.sanitise.bind(this);
@@ -26,7 +25,7 @@ class Audit extends Model {
   async sanitise() {
     // return object
     const sanitised = {
-      id : this.get('_id') ? this.get('_id').toString() : null
+      id : this.get('_id') ? this.get('_id').toString() : null,
     };
 
     // return sanitised

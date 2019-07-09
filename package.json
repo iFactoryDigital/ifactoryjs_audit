@@ -2,7 +2,9 @@
   "name": "@edenjs/audit",
   "description": "nothing yet",
   "version": "1.0.4",
-  "dependencies": {},
+  "dependencies": {
+    "escape-string-regexp": "^2.0.0"
+  },
   "engines": {
     "node": ">= 8.0.0"
   },

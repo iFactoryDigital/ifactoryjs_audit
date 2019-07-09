@@ -9,16 +9,16 @@ const Audit = model('audit');
 
 /**
  * create audit daemon class
- * 
+ *
  * @extends Daemon
  */
 class AuditDaemon extends Daemon {
   /**
    * construct audit daemon
    */
-  constructor() {
+  constructor(...args) {
     // run super
-    super(...arguments);
+    super(...args);
 
     // get audit models
     const models = (config.get('audit.models') || Object.keys(cache('models'))).filter(m => m !== 'audit');
@@ -43,6 +43,7 @@ class AuditDaemon extends Daemon {
             type,
             subject,
             updates : {},
+            // eslint-disable-next-line no-nested-ternary
             message : `${(way === 'create' ? 'Created' : (way === 'update' ? 'Updated' : 'Removed'))} ${subject.constructor.name}`,
           });
 
@@ -76,4 +77,4 @@ class AuditDaemon extends Daemon {
  *
  * @type {AuditDaemon}
  */
-exports = module.exports = AuditDaemon;
+module.exports = AuditDaemon;

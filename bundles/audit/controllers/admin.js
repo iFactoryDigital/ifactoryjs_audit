@@ -126,13 +126,11 @@ class AuditAdminController extends Controller {
   async updateAction(req, res, next) {
     // Set website variable
     let audit = null;
-    let create = true;
 
     // Check for website model
     if (req.params.id) {
       // Load by id
       audit = await Audit.findById(req.params.id);
-      create = false;
     }
 
     // create audit
@@ -154,7 +152,7 @@ class AuditAdminController extends Controller {
     if (!form.get('_id')) res.form('edenjs.audit');
 
     // Render page
-    res.render('audit/admin/update', {
+    return res.render('audit/admin/update', {
       item   : await audit.sanitise(),
       form   : sanitised,
       title  : `Update ${audit.get('_id').toString()}`,
@@ -185,13 +183,11 @@ class AuditAdminController extends Controller {
   async updateSubmitAction(req, res, next) {
     // Set website variable
     let audit = new Audit();
-    let create = true;
 
     // Check for website model
     if (req.params.id) {
       // Load by id
       audit = await Audit.findById(req.params.id);
-      create = false;
     }
 
     // create audit
@@ -249,7 +245,7 @@ class AuditAdminController extends Controller {
     if (!audit) return next();
 
     // Render page
-    res.render('audit/admin/remove', {
+    return res.render('audit/admin/remove', {
       item  : await audit.sanitise(),
       title : `Remove ${audit.get('_id').toString()}`,
     });
@@ -343,7 +339,7 @@ class AuditAdminController extends Controller {
     }).column('updates', {
       sort   : true,
       title  : 'Updates',
-      format : async (col, row) => {
+      format : async (col) => {
         // return name
         return col && Object.keys(col || {}).length ? Object.keys(col || {}).join(', ') : '<i>N/A</i>';
       },
