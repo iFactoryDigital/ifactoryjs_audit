@@ -1,7 +1,7 @@
 {
   "name": "@edenjs/audit",
   "description": "nothing yet",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "dependencies": {
     "escape-string-regexp": "^2.0.0"
   },
