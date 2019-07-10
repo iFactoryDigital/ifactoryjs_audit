@@ -27,9 +27,7 @@ config.audit = {
 
 ## Models
 
-### `Audit`
-
-[Usage](https://github.com/eden-js/audit/blob/master/bundles/audit/models/audit.js)
+### `Audit` _[Usage](https://github.com/eden-js/audit/blob/master/bundles/audit/models/audit.js)_
 
 Audit model consists of a single tracking item, each instance in the database corresponds to a single `update`, `remove`, or `create` of any tracked model.
 
@@ -41,9 +39,8 @@ const Audit = model('audit');
 
 ## Hooks
 
-### `audit.check`
+### `audit.check` _[Usage](https://github.com/eden-js/audit/blob/master/bundles/audit/daemons/audit.js#L60)_
 
-[Usage](https://github.com/eden-js/audit/blob/master/bundles/audit/daemons/audit.js#L60)
 
 Auditing logic allows us to hook and prevent creation of an audit item, or alter the updates/by fields.
 
