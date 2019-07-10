@@ -35,7 +35,7 @@ class AuditDaemon extends Daemon {
        */
       const createMonitor = (way, type) => {
         // return function
-        return (subject, { by, updates }) => {
+        return async (subject, { by, updates }) => {
           // create audit entity
           const audit = new Audit({
             by,
@@ -53,14 +53,23 @@ class AuditDaemon extends Daemon {
           // don't audit non-changes
           if (way === 'update' && !updateCheck.length) return;
 
-          // set set
-          for (const key of updateCheck) {
-            // set value
-            audit.set(`updates.${key}`, dotProp.get(subject.get(), key));
-          }
+          // data
+          const data = { by, updates, subject };
 
-          // save audit
-          audit.save();
+          // await audit check hook
+          await this.eden.hook('audit.check', data, () => {
+            // prevent
+            if (data.prevent) return;
+
+            // set set
+            for (const key of updateCheck) {
+              // set value
+              audit.set(`updates.${key}`, dotProp.get(subject.get(), key));
+            }
+
+            // save audit
+            audit.save();
+          });
         };
       };
 
