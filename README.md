@@ -27,7 +27,7 @@ config.audit = {
 
 ## Models
 
-```
+```js
 const Audit = model('audit');
 ```
 
@@ -35,7 +35,7 @@ Audit model consists of a single tracking item, each instance in the database co
 
 ## Hooks
 
-```
+```js
 this.eden.pre('audit.check', (data) => {
   // extract variables
   const { by, updates, subject } = data;
