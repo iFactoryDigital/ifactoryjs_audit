@@ -27,7 +27,7 @@ config.audit = {
 
 ## Models
 
-### Audit
+### `Audit`
 
 ```js
 const Audit = model('audit');
