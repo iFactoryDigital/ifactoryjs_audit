@@ -35,6 +35,8 @@ Audit model consists of a single tracking item, each instance in the database co
 
 ## Hooks
 
+### audit.check
+
 ```js
 this.eden.pre('audit.check', (data) => {
   // extract variables
