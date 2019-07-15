@@ -1,0 +1,124 @@
+<audit-admin-update-page>
+  <div class="page page-admin">
+
+    <admin-header title="Update Audit" preview={ preview } on-preview={ onPreview }>
+      <div slot="right">
+        <a href="/admin/audit" class="btn btn-lg btn-primary mr-2">
+          Back
+        </a>
+        <button class={ 'btn btn-lg' : true, 'btn-primary' : props.preview, 'btn-success' : !props.preview } onclick={ props.onPreview }>
+          { opts.preview ? 'Alter Form' : 'Finish Altering' }
+        </button>
+      </div>
+    </admin-header>
+
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <form-render action="/admin/audit/{ props.item.id }/update" method="post" ref="form" form={ props.form } placement="ifactory.audit" positions={ positions } preview={ preview } class="d-block mb-3" />
+        </div>
+        <div class="card-footer text-right">
+          <button type="button" onclick={ (e) => onSubmit(e) } class={ 'btn btn-success' : true, 'disabled' : loading() } disabled={ loading() }>
+            { loading() ? 'Submitting...' : 'Submit' }
+          </button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <script>
+    // import base
+    import Base from '../../js/base';
+    import uuid from 'uuid';
+
+    // export default
+    export default class AdminUpdatePage extends Base {
+      /**
+       * on before mount
+       *
+       * @param {Object} props
+       */
+      onBeforeMount(props) {
+        // run super
+        super.onBeforeMount(...arguments);
+
+        // set type
+        this.type    = props.item.type || 'raised';
+        this.preview = true;
+    
+        // set placements
+        this.positions = props.positions || props.fields.map((field) => {
+          // return field
+          return {
+            'type'     : field.type,
+            'uuid'     : uuid(),
+            'name'     : field.name,
+            'label'    : field.label,
+            'force'    : true,
+            'multiple' : field.multiple,
+            'children' : []
+          };
+        });
+      }
+    
+      /**
+       * on submit
+       *
+       * @param  {Event} e
+       *
+       * @return {*}
+       */
+      async onSubmit (e) {
+        // prevent default
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // set loading
+        this.loading('save', true);
+        
+        // update view
+        this.update();
+        
+        // submit form
+        await this.refs.form.submit();
+        
+        // set loading
+        this.loading('save', false);
+        
+        // update view
+        this.update();
+      }
+      
+      /**
+       * on preview
+       *
+       * @param  {Event} e
+       *
+       * @return {*}
+       */
+      onPreview (e) {
+        // prevent default
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // set loading
+        this.preview = !this.preview;
+        
+        // update view
+        this.update();
+      }
+
+      /**
+       * get category
+       *
+       * @return {Object}
+       */
+      audit () {
+        // return category
+        return this.props.item;
+      }
+    }
+
+  </script>
+</audit-admin-update-page>

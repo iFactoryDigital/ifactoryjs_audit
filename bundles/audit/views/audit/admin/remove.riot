@@ -10,10 +10,10 @@
     </admin-header>
 
     <div class="container-fluid">
-      <form method="post" action="/admin/audit/{ opts.item.id }/remove">
+      <form method="post" action="/admin/audit/{ props.item.id }/remove">
         <div class="card">
           <div class="card-body">
-            Are you sure you want to remove <b>{ opts.item.id }</b>?
+            Are you sure you want to remove <b>{ props.item.id }</b>?
           </div>
           <div class="card-footer text-right">
             <button type="submit" class="btn btn-success">Remove Audit</button>
