@@ -18,4 +18,4 @@ deploy:
     secure: aAU9fOgMDwVqZ6Ls7I0+HQhT+cmVHKEGvR0eU82+Bt45Vzmn9ERnu/aPAzLiUcQF1PpeItAOsJcryfSE6Ys3/bUjSjpd62pP1VDQ/j5ZcZY2W8sa5PUSaE66sNdEQ+wP1SILqoMobGBupwRl8mJ2bp56h0WOAsnWa0EuCO9KH2CHvGwxVRd94WjSnO/oSgsmk63GAvukOEijhHNBb09VGtI48FfwMbEnzR0FtmQYA+VLQFucymS8KmUMY49EsPuXtNOrIQjw2zxKTVfpCOOxsY0/n5PaTRgVXcoBULT9jI+DiY9cPG/fky1PJDDbNG7ISbGicYLn9K00UwMh8+X5us3AX4k9YttY/pAn1KxBGt+yzNHKlB24Ic0CySbzoTbpTi5jrNb/jNKy8mwj35ksR3MKYeq8I5vXvxWFHYlnyInlhSWg2Osz39EUPO8gpzO/B6D2byOhBPtG1f6lzd/tSvQoTkkwmUcvkPGYYNiIbTEXU+tWeaWyjLs4AluSV9a9Valoa+Pnj5zr/HD+ezsLvj4F3y12zHHzF3vcdMtAgQwqMXk7a6rfYLBE/PM/ELs4JO1W7Fn4ZXiEBQM9P424bAiKLLTMYBIsnWgiP9cdRtxOuzoQakvbXAQF2IelrxEQUVvMufZCmZYiU8iO4X+zQAccaY/ul/g+w3O4bMj9m3c=
   on:
     tags: true
-    repo: eden-js/audit
+    repo: ifactorydigital/ifactoryjs_audit
