@@ -11,6 +11,12 @@ config.audit = {
       label  : 'By',
     },
     {
+      name  : 'for',
+      grid  : true,
+      type  : 'text',
+      label : 'For',
+    },
+    {
       name   : 'subject',
       grid   : false,
       type   : 'text',

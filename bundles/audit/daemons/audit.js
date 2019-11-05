@@ -56,6 +56,8 @@ class AuditDaemon extends Daemon {
           // data
           const data = { by, updates, subject };
 
+          await this.eden.hook('audit.addFrom', audit, subject, m);
+
           // await audit check hook
           await this.eden.hook('audit.check', data, () => {
             // prevent
