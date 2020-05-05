@@ -7,6 +7,9 @@ const dotProp = require('dot-prop');
 // require models
 const Audit = model('audit');
 
+// require helpers
+const auditHelper    = helper('audit');
+
 /**
  * create audit daemon class
  *
@@ -80,6 +83,20 @@ class AuditDaemon extends Daemon {
       this.eden.pre(`${m}.remove`, createMonitor('remove', m));
       this.eden.post(`${m}.create`, createMonitor('create', m));
     });
+  }
+
+  /**
+   * audit hook
+   *
+   * @param  {req} req
+   * @param  {Object} object
+   *
+   * @pre audit.record
+   */
+  async record(req, { model, modelold, updates, update , message, client, excloude, no }) {
+    console.log('record start');
+    await auditHelper._recordAudit(model, modelold, updates, (update && typeof update !== "boolean") ? update : update ? 'Update' : 'Create', message, req.user, model.get(client) ? await model.get(client) : '', excloude, model.get(no));
+    console.log('record end');
   }
 }
 
