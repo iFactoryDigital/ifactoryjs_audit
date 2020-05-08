@@ -407,6 +407,9 @@ class AuditAdminController extends Controller {
       });
     });
 
+    // add hook for extra fields
+    await this.eden.hook('audit.datagrid', auditGrid, req);
+
     // Set default sort order
     auditGrid.sort('created_at', -1);
 
