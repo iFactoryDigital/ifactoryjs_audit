@@ -56,13 +56,14 @@ class AuditDaemon extends Daemon {
           // don't audit non-changes
           if (way === 'update' && !updateCheck.length) return;
 
-          // data
-          const data = { by, updates, subject };
-
           await this.eden.hook('audit.addFrom', audit, subject, m);
+
+          // data
+          const data = { by, updates, subject, audit };
 
           // await audit check hook
           await this.eden.hook('audit.check', data, () => {
+
             // prevent
             if (data.prevent) return;
 

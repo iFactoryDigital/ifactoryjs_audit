@@ -31,7 +31,6 @@ class AuditHelper extends Helper {
 
     if (!message, model.__id) {
       message = `[Updated] `;
-      console.log(updates.values());
       // updates
       const updateCheck = (Array.from(updates.values())).filter(u => u !== 'updated_at' && (exclude.length === 0 || exclude.find(item => item !== u)));
 
@@ -43,30 +42,37 @@ class AuditHelper extends Helper {
         if (Array.isArray(originvalue) && originvalue.length > 0) {
           for (let i = 0; i < originvalue.length; i++) {
             if (originvalue !== null && typeof originvalue === 'object') {
-              for (const key in originvalue[i]) {
-                if (originvalue[i][key] !== modify[i][key]) {
-                  if (typeof originvalue[i][key] !== 'object') {
-                    message += ` ${key} field: from ${originvalue[i][key]} to ${modify[i][key]}`;
-                    audit.set(`updates.${key}`, `from ${originvalue[i][key]} to ${modify[i][key]}`);
+              for (const key_ in originvalue[i]) {
+                if (originvalue[i][key_] !== modify[i][key_]) {
+                  console.log(originvalue[i][key_]+' '+modify[i][key_]);
+                  if (typeof originvalue[i][key_] !== 'object') {
+                    message += ` ${key_} field: from ${originvalue[i][key_]} to ${modify[i][key_]}`;
+                    audit.set(`updates.${key_}`, `from ${originvalue[i][key_]} to ${modify[i][key_]}`);
                   }
                 }
               }
             }
           }
         } else if (originvalue !== null && typeof originvalue === 'object') {
-          for (const key in originvalue) {
-            message += ` ${key} field: from ${originvalue[key]} to ${modify[key]}`;
+          for (const key_ in originvalue) {
+            if (originvalue[key_] !== modify[key_]) {
+              message += ` ${key_} field: from ${originvalue[key_]} to ${modify[key_]}`;
+            }
           }
         } else {
-          message += ` ${key} field: from ${originvalue} to ${modify}`;
-          audit.set(`updates.${key}`, `from ${originvalue} to ${modify}`);
+          if (originvalue !== modify) {
+            message += ` ${key} field: from ${originvalue} to ${modify}`;
+            audit.set(`updates.${key}`, `from ${originvalue} to ${modify}`);
+          }
         }
       }
-      if (!message) return ;
+      if (message === `[Updated] ` || !message) return ;
     }
     else if (!message && !model.__id) {
-      message = `[Created] subject ${no ? no : model.get('_id')}`;
+      message = `[Created] ${no ? no : model.get('_id')}`;
     }
+
+    if (!message) return ;
 
     audit.set('by'      , user);
     audit.set('for'     , client);
