@@ -102,7 +102,7 @@ class AuditAdminController extends Controller {
    * @menu     {ADMIN} Audit
    * @title    Audit Administration
    * @route    {get} /
-   * @parent   /admin/config
+   * @parent   /admin
    * @layout   admin
    * @priority 10
    */

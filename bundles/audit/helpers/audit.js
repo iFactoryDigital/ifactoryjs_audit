@@ -26,13 +26,16 @@ class AuditHelper extends Helper {
    * logs balance transaction
    *
    */
-  async _recordAudit(model, origin, updates, subject, message, user=null, client=null, exclude=[], no) {
+  async _recordAudit(req, model, origin, updates, subject, message, user=null, client=null, exclude=[], no) {
     const audit = new Audit();
-
-    if (!message, model.__id) {
+    console.log(message);
+    console.log(model.__id);
+    console.log(updates);
+    console.log(exclude);
+    if (!message && model.__id && updates) {
       message = `[Updated] `;
       // updates
-      const updateCheck = (Array.from(updates.values())).filter(u => u !== 'updated_at' && (exclude.length === 0 || exclude.find(item => item !== u)));
+      const updateCheck = (Array.from(updates.values())).filter(u => u !== 'updated_at' && (exclude.length === 0 || !exclude.find(item => item === u)));
 
       // set set
       for (const key of updateCheck) {
@@ -68,12 +71,14 @@ class AuditHelper extends Helper {
       }
       if (message === `[Updated] ` || !message) return ;
     }
-    else if (!message && !model.__id) {
+    else if ((subject && subject === 'Create' && !message) || (!message && !model.__id)) {
       message = `[Created] ${no ? no : model.get('_id')}`;
+    } else if ((subject && subject === 'Remove' && !message)) {
+      message = `[Removed] ${no ? no : model.get('_id')}`;
     }
 
     if (!message) return ;
-
+    console.log(user);
     audit.set('by'      , user);
     audit.set('for'     , client);
     audit.set('byname'  , await user.get('username') ? await user.get('username') : await client.get('name') ? await client.get('name') : await user.get('first') ? await user.get('first') + ''+await user.get('last') : '');

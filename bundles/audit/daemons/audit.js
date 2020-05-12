@@ -6,6 +6,7 @@ const dotProp = require('dot-prop');
 
 // require models
 const Audit = model('audit');
+const User  = model('user');
 
 // require helpers
 const auditHelper    = helper('audit');
@@ -96,7 +97,9 @@ class AuditDaemon extends Daemon {
    */
   async record(req, { model, modelold, updates, update , message, client, excloude, no }) {
     console.log('record start');
-    await auditHelper._recordAudit(model, modelold, updates, (update && typeof update !== "boolean") ? update : update ? 'Update' : 'Create', message, req.user, model.get(client) ? await model.get(client) : '', excloude, model.get(no));
+    let user_ = null;
+    !req ? user_ = await User.findById('5c6f69fefe22ec452d2cf5aa') : user_ = req.user;
+    await auditHelper._recordAudit(req, model, modelold, updates, (update && typeof update !== "boolean") ? update : update ? 'Update' : 'Create', message, user_, model.get(client) ? await model.get(client) : '', excloude, model.get(no));
     console.log('record end');
   }
 }
