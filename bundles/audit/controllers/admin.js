@@ -22,7 +22,7 @@ const blockHelper = helper('cms/block');
 /**
  * Build audit controller
  *
- * @acl   admin
+ * @acl   admin.audit
  * @fail  next
  * @mount /admin/audit
  */
