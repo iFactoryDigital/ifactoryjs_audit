@@ -29,7 +29,7 @@ class AuditHelper extends Helper {
   async _recordAudit(req, model, origin, updates, subject, message, user=null, client=null, exclude=[], no) {
     const audit = new Audit();
     console.log(message);
-    console.log(model.__id);
+    console.log(model);
     console.log(updates);
     console.log(exclude);
     if (!message && model.__id && updates) {
@@ -46,7 +46,7 @@ class AuditHelper extends Helper {
           for (let i = 0; i < originvalue.length; i++) {
             if (originvalue !== null && typeof originvalue === 'object') {
               for (const key_ in originvalue[i]) {
-                if (originvalue[i][key_] !== modify[i][key_]) {
+                if (modify && modify[i] && modify[i][key_] && originvalue[i][key_] !== modify[i][key_]) {
                   console.log(originvalue[i][key_]+' '+modify[i][key_]);
                   if (typeof originvalue[i][key_] !== 'object') {
                     message += ` ${key_} field: from ${originvalue[i][key_]} to ${modify[i][key_]}`;
