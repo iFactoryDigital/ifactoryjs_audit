@@ -82,7 +82,7 @@ class AuditHelper extends Helper {
     audit.set('by'      , user);
     audit.set('for'     , client);
     audit.set('byname'  , await user.get('username') ? await user.get('username') : await client.get('name') ? await client.get('name') : await user.get('first') ? await user.get('first') + ''+await user.get('last') : '');
-    audit.set('forname' , await client.get('name') ? await client.get('name') : await client.get('first') ? await client.get('first') + ''+await client.get('last') : '');
+    audit.set('forname' , client ? await client.get('name') ? await client.get('name') : await client.get('first') ? await client.get('first') + ''+await client.get('last') : '' : '');
     audit.set('type'    , model.constructor.name);
     audit.set('way'     , subject);
     audit.set('subject' , subject);
