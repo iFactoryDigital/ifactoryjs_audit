@@ -68,12 +68,13 @@ class AuditDaemon extends Daemon {
             // prevent
             if (data.prevent) return;
 
-            // set set
-            for (const key of updateCheck) {
-              // set value
-              audit.set(`updates.${key}`, dotProp.get(subject.get(), key));
+            if (audit.get('setmessage')) {
+              // set set
+              for (const key of updateCheck) {
+                // set value
+                audit.set(`updates.${key}`, dotProp.get(subject.get(), key));
+              }
             }
-
             // save audit
             audit.save();
           });
