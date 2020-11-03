@@ -28,10 +28,7 @@ class AuditHelper extends Helper {
    */
   async _recordAudit(req, model, origin, updates, subject, message, user=null, client=null, exclude=[], no) {
     const audit = new Audit();
-    console.log(message);
-    console.log(model);
-    console.log(updates);
-    console.log(exclude);
+
     if (!message && model.__id && updates) {
       message = `[Updated] `;
       // updates
@@ -78,11 +75,10 @@ class AuditHelper extends Helper {
     }
 
     if (!message) return ;
-    console.log(user);
     audit.set('by'      , user);
     audit.set('for'     , client);
     audit.set('byname'  , await user.get('username') ? await user.get('username') : await client.get('name') ? await client.get('name') : await user.get('first') ? await user.get('first') + ''+await user.get('last') : '');
-    audit.set('forname' , client ? await client.get('name') ? await client.get('name') : await client.get('first') ? await client.get('first') + ''+await client.get('last') : '' : '');
+    audit.set('forname' , client ? client.get && client.get('name') ? await client.get('name') : await client.get('first') ? await client.get('first') + ''+await client.get('last') : '' : '');
     audit.set('type'    , model.constructor.name);
     audit.set('way'     , subject);
     audit.set('subject' , subject);
