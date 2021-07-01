@@ -55,7 +55,7 @@ class AuditHelper extends Helper {
           }
         } else if (originvalue !== null && typeof originvalue === 'object') {
           for (const key_ in originvalue) {
-            if (originvalue[key_] !== modify[key_]) {
+            if (modify && originvalue[key_] !== modify[key_]) {
               message += ` ${key_} field: from ${originvalue[key_]} to ${modify[key_]}`;
             }
           }
